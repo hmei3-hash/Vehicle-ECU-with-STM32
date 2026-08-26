@@ -1,0 +1,29 @@
+# Build outputs
+*.o
+*.elf
+*.bin
+*.hex
+*.map
+*.lst
+
+# IDE files — adjust based on your IDE choice
+# STM32CubeIDE
+.settings/
+Debug/
+Release/
+
+# VS Code
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary
+*.tmp
+*.bak
+*.swp
+
+# Binary files
+*.a
+*.lib
