@@ -15,7 +15,7 @@ This document defines the phased learning roadmap for the ECU project. Each phas
 
 **What you need to do:**
 - [ ] Unbox and visually inspect all components
-- [ ] Set up STM32 development environment: [TBD — STM32CubeIDE / VS Code + toolchain]
+- [ ] Set up STM32 development environment: PlatformIO + STM32Cube (HAL/LL)
 - [ ] Connect STM32 NUCLEO-F446RE to PC via [USB_CONNECTION_TYPE]
 - [ ] Flash a minimal blink LED program (bare-metal, no HAL if possible)
 - [ ] Verify serial output (UART printf or SWO)
