@@ -34,7 +34,7 @@ This is **not** a safety-critical or production-grade ECU. It is a hands-on lear
 
 | Component            | Model / Part Number         |
 |----------------------|-----------------------------|
-| MCU                  | [STM32_MODEL]               |
+| MCU                  | STM32 NUCLEO-F446RE               |
 | CAN Transceiver 1   | [CAN_TRANSCEIVER_MODEL_1]   |
 | CAN Transceiver 2   | [CAN_TRANSCEIVER_MODEL_2]   |
 | CAN Transceiver 3   | [CAN_TRANSCEIVER_MODEL_3]   |
@@ -50,7 +50,7 @@ This is **not** a safety-critical or production-grade ECU. It is a hands-on lear
 
 ## Software Stack
 
-- **MCU:** [STM32_MODEL]
+- **MCU:** STM32 NUCLEO-F446RE
 - **RTOS:** FreeRTOS
 - **Communication:** CAN 2.0 [TBD]
 - **Build system:** [TBD] — STM32CubeIDE / Makefile / CMake

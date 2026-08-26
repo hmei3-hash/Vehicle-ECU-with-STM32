@@ -16,7 +16,7 @@ This document defines the phased learning roadmap for the ECU project. Each phas
 **What you need to do:**
 - [ ] Unbox and visually inspect all components
 - [ ] Set up STM32 development environment: [TBD — STM32CubeIDE / VS Code + toolchain]
-- [ ] Connect [STM32_MODEL] to PC via [USB_CONNECTION_TYPE]
+- [ ] Connect STM32 NUCLEO-F446RE to PC via [USB_CONNECTION_TYPE]
 - [ ] Flash a minimal blink LED program (bare-metal, no HAL if possible)
 - [ ] Verify serial output (UART printf or SWO)
 - [ ] Document your hardware setup with photos
@@ -124,7 +124,7 @@ This document defines the phased learning roadmap for the ECU project. Each phas
 
 **Learning objectives:**
 - Understand CAN 2.0A/B frame format
-- Configure STM32 CAN peripheral (bxCAN or FDCAN — depends on [STM32_MODEL])
+- Configure STM32 CAN peripheral (bxCAN or FDCAN — depends on STM32 NUCLEO-F446RE)
 - Transmit and receive a single CAN frame
 - Use CAN transceiver hardware
 

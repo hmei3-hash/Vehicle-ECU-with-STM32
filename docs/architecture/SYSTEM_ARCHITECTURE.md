@@ -21,7 +21,7 @@
 +---------------------------+
 | Hardware Abstraction      |  Register-level access
 +---------------------------+
-| Hardware                  |  [STM32_MODEL] + peripherals
+| Hardware                  |  STM32 NUCLEO-F446RE + peripherals
 +---------------------------+
 ```
 

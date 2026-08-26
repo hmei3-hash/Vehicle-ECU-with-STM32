@@ -6,7 +6,7 @@
 
 | Component            | Model / Part Number         | Quantity |
 |----------------------|-----------------------------|----------|
-| MCU                  | [STM32_MODEL]               | [TBD]    |
+| MCU                  | STM32 NUCLEO-F446RE               | [TBD]    |
 | CAN Transceiver      | [CAN_TRANSCEIVER_MODEL]     | [TBD]    |
 | TOF Sensor           | [TOF_SENSOR_MODEL]          | [TBD]    |
 | Temperature Sensor   | [TEMPERATURE_SENSOR_MODEL]  | [TBD]    |
