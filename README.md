@@ -35,9 +35,9 @@ This is **not** a safety-critical or production-grade ECU. It is a hands-on lear
 | Component            | Model / Part Number         |
 |----------------------|-----------------------------|
 | MCU                  | STM32 NUCLEO-F446RE               |
-| CAN Transceiver 1   | [CAN_TRANSCEIVER_MODEL_1]   |
-| CAN Transceiver 2   | [CAN_TRANSCEIVER_MODEL_2]   |
-| CAN Transceiver 3   | [CAN_TRANSCEIVER_MODEL_3]   |
+| CAN Transceiver 1   | WCMCU-20   |
+| CAN Transceiver 2   | WCMCU-20   |
+| CAN Transceiver 3   | WCMCU-20   |
 | TOF Sensor           | [TOF_SENSOR_MODEL]          |
 | Temperature Sensor   | [TEMPERATURE_SENSOR_MODEL]  |
 | LED                  | [LED_COMPONENT]             |
