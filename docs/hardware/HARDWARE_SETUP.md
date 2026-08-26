@@ -15,19 +15,19 @@
 
 ## Pin Mapping
 
-### ECU Node 1 — [ECU_1_NAME]
+### ECU Node 1 — Sensor Node
 
 | Pin  | Function   | Connected To       | Notes |
 |------|------------|--------------------|-------|
 | [TBD]| [TBD]      | [TBD]              | [TBD] |
 
-### ECU Node 2 — [ECU_2_NAME]
+### ECU Node 2 — Control Node
 
 | Pin  | Function   | Connected To       | Notes |
 |------|------------|--------------------|-------|
 | [TBD]| [TBD]      | [TBD]              | [TBD] |
 
-### ECU Node 3 — [ECU_3_NAME]
+### ECU Node 3 — Dashboard Node
 
 | Pin  | Function   | Connected To       | Notes |
 |------|------------|--------------------|-------|

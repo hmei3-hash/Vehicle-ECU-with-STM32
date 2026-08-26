@@ -21,7 +21,7 @@ This is **not** a safety-critical or production-grade ECU. It is a hands-on lear
 
 ```
   [ECU Node 1]          [ECU Node 2]          [ECU Node 3]
-  [ECU_1_NAME]          [ECU_2_NAME]          [ECU_3_NAME]
+  Sensor Node          Control Node          Dashboard Node
        |                     |                     |
        +---------------------+---------------------+
                          CAN Bus
@@ -59,29 +59,29 @@ This is **not** a safety-critical or production-grade ECU. It is a hands-on lear
 
 ## ECU Nodes
 
-### ECU Node 1 — [ECU_1_NAME]
+### ECU Node 1 — Sensor Node
 
-- **Purpose:** [ECU_1_PURPOSE]
-- **Inputs:** [ECU_1_INPUTS]
-- **Outputs:** [ECU_1_OUTPUTS]
-- **Peripherals:** [ECU_1_PERIPHERALS]
-- **CAN responsibilities:** [ECU_1_CAN_RESPONSIBILITIES]
+- **Purpose:** Read TOF400C (VL53L1X) and BMP280 (temperature + barometric pressure) sensors, transmit data over CAN
+- **Inputs:** TOF400C (I2C), BMP280 (temperature + barometric pressure) (I2C)
+- **Outputs:** CAN TX (sensor data)
+- **Peripherals:** I2C, CAN, Timer
+- **CAN responsibilities:** Transmit sensor readings periodically
 
-### ECU Node 2 — [ECU_2_NAME]
+### ECU Node 2 — Control Node
 
-- **Purpose:** [ECU_2_PURPOSE]
-- **Inputs:** [ECU_2_INPUTS]
-- **Outputs:** [ECU_2_OUTPUTS]
-- **Peripherals:** [ECU_2_PERIPHERALS]
-- **CAN responsibilities:** [ECU_2_CAN_RESPONSIBILITIES]
+- **Purpose:** Receive sensor data via CAN, execute control logic, drive NEMA17 motor
+- **Inputs:** CAN RX (sensor data)
+- **Outputs:** NEMA17 with TMC2209 (STEP/DIR or UART), CAN TX (status)
+- **Peripherals:** CAN, GPIO, Timer, UART [TBD]
+- **CAN responsibilities:** Receive sensor data, transmit control status
 
-### ECU Node 3 — [ECU_3_NAME]
+### ECU Node 3 — Dashboard Node
 
-- **Purpose:** [ECU_3_PURPOSE]
-- **Inputs:** [ECU_3_INPUTS]
-- **Outputs:** [ECU_3_OUTPUTS]
-- **Peripherals:** [ECU_3_PERIPHERALS]
-- **CAN responsibilities:** [ECU_3_CAN_RESPONSIBILITIES]
+- **Purpose:** Receive data from all nodes via CAN, display system status (UART now, LCD later)
+- **Inputs:** CAN RX (sensor data, control status)
+- **Outputs:** UART serial print (future: LCD), Single LED status indicator
+- **Peripherals:** CAN, UART, GPIO
+- **CAN responsibilities:** Receive all messages, no TX [TBD]
 
 ## CAN Network
 

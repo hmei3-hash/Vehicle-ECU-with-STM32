@@ -29,9 +29,9 @@
 
 | Node           | Role           | Inputs        | Outputs       |
 |----------------|----------------|---------------|---------------|
-| [ECU_1_NAME]   | [ECU_1_PURPOSE] | [ECU_1_INPUTS] | [ECU_1_OUTPUTS] |
-| [ECU_2_NAME]   | [ECU_2_PURPOSE] | [ECU_2_INPUTS] | [ECU_2_OUTPUTS] |
-| [ECU_3_NAME]   | [ECU_3_PURPOSE] | [ECU_3_INPUTS] | [ECU_3_OUTPUTS] |
+| Sensor Node   | Read TOF400C (VL53L1X) and BMP280 (temperature + barometric pressure) sensors, transmit data over CAN | TOF400C (I2C), BMP280 (temperature + barometric pressure) (I2C) | CAN TX (sensor data) |
+| Control Node   | Receive sensor data via CAN, execute control logic, drive NEMA17 motor | CAN RX (sensor data) | NEMA17 with TMC2209 (STEP/DIR or UART), CAN TX (status) |
+| Dashboard Node   | Receive data from all nodes via CAN, display system status (UART now, LCD later) | CAN RX (sensor data, control status) | UART serial print (future: LCD), Single LED status indicator |
 
 ## Data Flow
 

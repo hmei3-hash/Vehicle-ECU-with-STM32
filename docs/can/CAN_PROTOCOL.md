@@ -12,9 +12,9 @@
 
 | Node ID | Node Name    | Description      |
 |---------|-------------|------------------|
-| [TBD]   | [ECU_1_NAME] | [ECU_1_PURPOSE] |
-| [TBD]   | [ECU_2_NAME] | [ECU_2_PURPOSE] |
-| [TBD]   | [ECU_3_NAME] | [ECU_3_PURPOSE] |
+| [TBD]   | Sensor Node | Read TOF400C (VL53L1X) and BMP280 (temperature + barometric pressure) sensors, transmit data over CAN |
+| [TBD]   | Control Node | Receive sensor data via CAN, execute control logic, drive NEMA17 motor |
+| [TBD]   | Dashboard Node | Receive data from all nodes via CAN, display system status (UART now, LCD later) |
 
 ## Message Definitions
 
