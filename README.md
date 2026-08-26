@@ -25,7 +25,7 @@ This is **not** a safety-critical or production-grade ECU. It is a hands-on lear
        |                     |                     |
        +---------------------+---------------------+
                          CAN Bus
-                     [CAN_BITRATE]
+                     250 kbps
 ```
 
 **Architecture details:** See `docs/architecture/` for system diagrams and design documents.
@@ -85,7 +85,7 @@ This is **not** a safety-critical or production-grade ECU. It is a hands-on lear
 
 ## CAN Network
 
-- **Bitrate:** [CAN_BITRATE]
+- **Bitrate:** 250 kbps
 - **Nodes:** [CAN_NODE_LIST]
 
 ### Message Definitions

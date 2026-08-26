@@ -5,7 +5,7 @@
 ## General
 
 - **CAN Standard:** [TBD — CAN 2.0A / CAN 2.0B]
-- **Bitrate:** [CAN_BITRATE]
+- **Bitrate:** 250 kbps
 - **Termination:** [TBD — 120 ohm resistors at each end of bus]
 
 ## Node List

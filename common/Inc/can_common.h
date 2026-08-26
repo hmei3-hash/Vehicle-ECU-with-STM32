@@ -14,6 +14,6 @@
 /* #define CAN_MSG_ID_XXX    0x000 */
 
 /* CAN Bitrate — TODO: Define by Hongyi */
-/* #define CAN_BITRATE       [CAN_BITRATE] */
+/* #define CAN_BITRATE       250 kbps */
 
 #endif /* CAN_COMMON_H */

@@ -131,7 +131,7 @@ This document defines the phased learning roadmap for the ECU project. Each phas
 **What you need to do:**
 - [ ] Study CAN protocol basics: dominant/recessive, arbitration, CRC, ACK, error frames
 - [ ] Wire WCMCU-20 to STM32 CAN TX/RX pins
-- [ ] Configure CAN peripheral: bitrate [CAN_BITRATE], filters, interrupts
+- [ ] Configure CAN peripheral: bitrate 250 kbps, filters, interrupts
 - [ ] Transmit a CAN frame and verify with logic analyzer
 - [ ] Receive a CAN frame (loopback mode first, then with second node)
 - [ ] Document CAN peripheral register configuration
