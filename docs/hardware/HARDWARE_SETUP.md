@@ -8,10 +8,10 @@
 |----------------------|-----------------------------|----------|
 | MCU                  | STM32 NUCLEO-F446RE               | [TBD]    |
 | CAN Transceiver      | WCMCU-20     | [TBD]    |
-| TOF Sensor           | [TOF_SENSOR_MODEL]          | [TBD]    |
-| Temperature Sensor   | [TEMPERATURE_SENSOR_MODEL]  | [TBD]    |
-| LED                  | [LED_COMPONENT]             | [TBD]    |
-| Motor                | [MOTOR_MODEL]               | [TBD]    |
+| TOF Sensor           | TOF400C (VL53L1X)          | [TBD]    |
+| Temperature Sensor   | BMP280 (temperature + barometric pressure) (temperature + barometric pressure)  | [TBD]    |
+| LED                  | Single LED             | [TBD]    |
+| Motor                | NEMA17 with TMC2209               | [TBD]    |
 
 ## Pin Mapping
 

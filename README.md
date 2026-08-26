@@ -38,10 +38,10 @@ This is **not** a safety-critical or production-grade ECU. It is a hands-on lear
 | CAN Transceiver 1   | WCMCU-20   |
 | CAN Transceiver 2   | WCMCU-20   |
 | CAN Transceiver 3   | WCMCU-20   |
-| TOF Sensor           | [TOF_SENSOR_MODEL]          |
-| Temperature Sensor   | [TEMPERATURE_SENSOR_MODEL]  |
-| LED                  | [LED_COMPONENT]             |
-| Motor                | [MOTOR_MODEL]               |
+| TOF Sensor           | TOF400C (VL53L1X)          |
+| Temperature Sensor   | BMP280 (temperature + barometric pressure) (temperature + barometric pressure)  |
+| LED                  | Single LED             |
+| Motor                | NEMA17 with TMC2209               |
 | Logic Analyzer       | [LOGIC_ANALYZER_MODEL]      |
 | USB Connection       | [USB_CONNECTION_TYPE]        |
 | Other                | [OTHER_HARDWARE]            |

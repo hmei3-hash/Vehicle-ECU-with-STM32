@@ -43,7 +43,7 @@ This document defines the phased learning roadmap for the ECU project. Each phas
 - Understand push-pull vs open-drain, pull-up/pull-down
 
 **What you need to do:**
-- [ ] Configure GPIO pins as output — drive [LED_COMPONENT]
+- [ ] Configure GPIO pins as output — drive Single LED
 - [ ] Configure GPIO pins as input — read a button or jumper wire
 - [ ] Implement GPIO toggling at different speeds
 - [ ] Read input state and reflect on output (input-to-LED)
@@ -100,9 +100,9 @@ This document defines the phased learning roadmap for the ECU project. Each phas
 - Understand ADC for analog sensors
 
 **What you need to do:**
-- [ ] Read the [TOF_SENSOR_MODEL] datasheet — understand its interface and registers
+- [ ] Read the TOF400C (VL53L1X) datasheet — understand its interface and registers
 - [ ] Implement I2C/SPI communication to read sensor data
-- [ ] Read the [TEMPERATURE_SENSOR_MODEL] datasheet
+- [ ] Read the BMP280 (temperature + barometric pressure) (temperature + barometric pressure) datasheet
 - [ ] Implement temperature reading (ADC or digital interface — [TBD])
 - [ ] Print sensor readings over serial
 - [ ] Validate sensor readings against known distances/temperatures
