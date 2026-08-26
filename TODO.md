@@ -4,7 +4,7 @@ Master checklist of decisions and tasks. Check off as you go.
 
 ## Decisions Needed Before Starting
 
-- [ ] **Project name** — choose a name and update all [PROJECT_NAME] placeholders
+- [ ] **Project name** — choose a name and update all Vehicle-ECU-with-STM32 placeholders
 - [ ] **STM32 model** — decide which STM32 board(s) to use, update [STM32_MODEL]
 - [ ] **CAN transceivers** — select CAN transceiver ICs, update [CAN_TRANSCEIVER_MODEL_x]
 - [ ] **Sensors** — confirm TOF and temperature sensor models

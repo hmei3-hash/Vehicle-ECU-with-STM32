@@ -1,4 +1,4 @@
-# [PROJECT_NAME]
+# Vehicle-ECU-with-STM32
 
 A multi-node CAN-based ECU learning system built on STM32 + FreeRTOS.
 
@@ -124,7 +124,7 @@ See [TEST_PLAN.md](TEST_PLAN.md) for test case templates and results.
 ## Repository Structure
 
 ```
-[PROJECT_NAME]/
+Vehicle-ECU-with-STM32/
 ├── docs/
 │   ├── architecture/      # System design documents
 │   ├── can/               # CAN protocol specs
