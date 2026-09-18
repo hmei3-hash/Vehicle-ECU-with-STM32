@@ -1,159 +1,187 @@
-# Vehicle-ECU-with-STM32
+# CAN Gimbal Control System
 
-A multi-node CAN-based ECU learning system built on STM32 + FreeRTOS.
+A 2-axis gimbal control system built on STM32 + CAN bus, with a Linux-based debug/OTA tool chain.
 
-> **Status:** Work in progress — this is a personal learning and portfolio project.
+> **Status:** Active development — Phase 0 (hardware bring-up) in progress.
 
 ## Project Overview
 
-This project implements a small-scale, multi-node automotive ECU system for learning embedded software development. The system consists of three ECU nodes communicating over a CAN bus, each responsible for different vehicle subsystem functions.
+This project implements a CAN-networked gimbal controller: two STM32 nodes (one per axis) running closed-loop motor control, connected through CAN bus to a Linux debug/validation tool on a Raspberry Pi. The Linux side provides telemetry logging, automated testing, and over-the-air firmware updates via a custom CAN OTA protocol.
 
-This is **not** a safety-critical or production-grade ECU. It is a hands-on learning project designed to build real skills in automotive embedded systems.
+This is a personal learning and portfolio project, not a production system.
 
 ## Motivation
 
-- Develop practical experience with STM32 MCU peripheral programming
-- Learn CAN bus communication and automotive-style distributed systems
-- Practice RTOS-based embedded software architecture
-- Build a tangible portfolio piece demonstrating firmware engineering skills
+- Hands-on experience with STM32 peripheral programming and CAN bus
+- Design and implement a custom bootloader with CAN-based OTA firmware update
+- Practice RTOS-based embedded architecture on real hardware
+- Build a Linux-side debug/validation tool using SocketCAN
+- Create a tangible firmware engineering portfolio piece
 
 ## System Architecture
 
 ```
-  [ECU Node 1]          [ECU Node 2]          [ECU Node 3]
-  Sensor Node          Control Node          Dashboard Node
-       |                     |                     |
-       +---------------------+---------------------+
-                         CAN Bus
-                     250 kbps
+                     Linux Debug Tool (Raspberry Pi)
+                            |
+       +--------------------+--------------------+
+       |                    |                    |
+  Test Runner        Telemetry Logger      Firmware Manager
+       |                    |                    |
+       +--------------------+--------------------+
+                            |
+                        SocketCAN (slcan0)
+                            |
+                      ESP32-S3 USB-CAN Bridge
+                       (SLCAN firmware)
+                            |
+                     CAN Bus (250 kbps)
+                    +-------+-------+
+                    |               |
+                 Axis X          Axis Y
+                 STM32           STM32
+              (Node 0x01)     (Node 0x02)
+                    |               |
+             +------+------+ +------+------+
+             | Bootloader  | | Bootloader  |
+             +-------------+ +-------------+
+             | Application | | Application |
+             +------+------+ +------+------+
+                    |               |
+             Control Loop      Control Loop
+                    |               |
+             Mag Encoder       Mag Encoder
+                    |               |
+                  Motor            Motor
 ```
-
-**Architecture details:** See `docs/architecture/` for system diagrams and design documents.
 
 ## Hardware
 
-| Component            | Model / Part Number         |
-|----------------------|-----------------------------|
-| MCU                  | STM32 NUCLEO-F446RE               |
-| CAN Transceiver 1   | WCMCU-20   |
-| CAN Transceiver 2   | WCMCU-20   |
-| CAN Transceiver 3   | WCMCU-20   |
-| TOF Sensor           | TOF400C (VL53L1X)          |
-| Temperature Sensor   | BMP280 (temperature + barometric pressure) (temperature + barometric pressure)  |
-| LED                  | Single LED             |
-| Motor                | NEMA17 with TMC2209               |
-| Logic Analyzer       | [LOGIC_ANALYZER_MODEL]      |
-| USB Connection       | [USB_CONNECTION_TYPE]        |
-| Other                | [OTHER_HARDWARE]            |
-
-**Pin mappings:** [TBD] — See `docs/hardware/` once defined.
-
-## Software Stack
-
-- **MCU:** STM32 NUCLEO-F446RE
-- **RTOS:** FreeRTOS
-- **Communication:** CAN 2.0 [TBD]
-- **Build system:** [TBD] — STM32CubeIDE / Makefile / CMake
-- **Debugger:** [TBD]
-- **Language:** C
-
-## ECU Nodes
-
-### ECU Node 1 — Sensor Node
-
-- **Purpose:** Read TOF400C (VL53L1X) and BMP280 (temperature + barometric pressure) sensors, transmit data over CAN
-- **Inputs:** TOF400C (I2C), BMP280 (temperature + barometric pressure) (I2C)
-- **Outputs:** CAN TX (sensor data)
-- **Peripherals:** I2C, CAN, Timer
-- **CAN responsibilities:** Transmit sensor readings periodically
-
-### ECU Node 2 — Control Node
-
-- **Purpose:** Receive sensor data via CAN, execute control logic, drive NEMA17 motor
-- **Inputs:** CAN RX (sensor data)
-- **Outputs:** NEMA17 with TMC2209 (STEP/DIR or UART), CAN TX (status)
-- **Peripherals:** CAN, GPIO, Timer, UART [TBD]
-- **CAN responsibilities:** Receive sensor data, transmit control status
-
-### ECU Node 3 — Dashboard Node
-
-- **Purpose:** Receive data from all nodes via CAN, display system status (UART now, LCD later)
-- **Inputs:** CAN RX (sensor data, control status)
-- **Outputs:** UART serial print (future: LCD), Single LED status indicator
-- **Peripherals:** CAN, UART, GPIO
-- **CAN responsibilities:** Receive all messages, no TX [TBD]
+| Component | Qty | Purpose |
+|-----------|-----|---------|
+| STM32 NUCLEO-F446RE | 2 | Axis X / Axis Y motor control nodes |
+| ESP32-S3 | 1 | USB-CAN bridge (TWAI + SLCAN firmware) |
+| SN65HVD230 CAN transceiver | 3 | One per CAN node |
+| Raspberry Pi | 1 | Linux upper computer (debug + OTA) |
+| 120 Ohm termination resistor | 2 | CAN bus termination (each end) |
+| NEMA17 + TMC2209 | 2 | Stepper motors (one per axis) |
+| Magnetic encoder | 2 | Position feedback (one per axis) |
+| BMP280 | 1 | Temperature + barometric pressure sensor |
+| TOF400C (VL53L1X) | 1 | Time-of-flight distance sensor |
 
 ## CAN Network
 
-- **Bitrate:** 250 kbps
-- **Nodes:** [CAN_NODE_LIST]
+| Node | Node ID | Role |
+|------|---------|------|
+| STM32 Axis X | 0x01 | Motor control + sensor acquisition |
+| STM32 Axis Y | 0x02 | Motor control + sensor acquisition |
+| Linux Debug (via ESP32-S3 bridge) | 0x03 | Telemetry, testing, OTA firmware update |
 
-### Message Definitions
+**Bitrate:** 250 kbps
 
-| Message     | CAN ID   | Sender | Receiver | Period   | DLC   | Payload   |
-|-------------|----------|--------|----------|----------|-------|-----------|
-| [MESSAGE_1] | [CAN_ID] | [NODE] | [NODE]   | [PERIOD] | [DLC] | [PAYLOAD] |
-| [MESSAGE_2] | [CAN_ID] | [NODE] | [NODE]   | [PERIOD] | [DLC] | [PAYLOAD] |
-| [MESSAGE_3] | [CAN_ID] | [NODE] | [NODE]   | [PERIOD] | [DLC] | [PAYLOAD] |
+**Full CAN protocol:** See [`docs/can/CAN_PROTOCOL.md`](docs/can/CAN_PROTOCOL.md)
 
-**Full CAN protocol specification:** See `docs/can/CAN_PROTOCOL.md` once defined.
+## CAN OTA Firmware Update
 
-## Development Roadmap
+The system includes a custom bootloader on each STM32 node and a 3-phase OTA protocol over CAN:
 
-See [DEVELOPMENT_PLAN.md](DEVELOPMENT_PLAN.md) for the full phased plan.
+1. **Handshake** — Linux sends firmware size, CRC32, version; STM32 erases APP flash region and ACKs
+2. **Data transfer** — Firmware binary chunked into 6-byte CAN frames with sequence numbers, ACK per frame
+3. **Verification** — CRC32 check on received image; reboot to new application on success
 
-| Phase | Topic                        | Status  |
-|-------|------------------------------|---------|
-| 0     | Hardware bring-up            | [TBD]   |
-| 1     | STM32 GPIO                   | [TBD]   |
-| 2     | Timer / Interrupt            | [TBD]   |
-| 3     | Sensor driver                | [TBD]   |
-| 4     | CAN basic communication      | [TBD]   |
-| 5     | Multi-node CAN               | [TBD]   |
-| 6     | CAN message protocol         | [TBD]   |
-| 7     | FreeRTOS                     | [TBD]   |
-| 8     | ECU application architecture | [TBD]   |
-| 9     | Fault detection              | [TBD]   |
-| 10    | Testing / debugging          | [TBD]   |
-| 11    | Documentation / portfolio    | [TBD]   |
+| CAN ID | Message | Direction |
+|--------|---------|-----------|
+| 0x100 | UPDATE_START | Linux -> STM32 |
+| 0x101 | UPDATE_DATA | Linux -> STM32 |
+| 0x102 | UPDATE_END | Linux -> STM32 |
+| 0x103 | UPDATE_ACK | STM32 -> Linux |
+| 0x104 | UPDATE_NACK | STM32 -> Linux |
+| 0x105 | VERSION_REQUEST | Linux -> STM32 |
+| 0x106 | VERSION_RESPONSE | STM32 -> Linux |
+| 0x107 | REBOOT | Linux -> STM32 |
 
-## Testing
+**Full OTA protocol spec:** See [`docs/architecture/SYSTEM_ARCHITECTURE.md`](docs/architecture/SYSTEM_ARCHITECTURE.md)
 
-See [TEST_PLAN.md](TEST_PLAN.md) for test case templates and results.
+## Flash Layout (per STM32 node)
+
+```
+0x08000000  +---------------------------+
+            |       Bootloader          |
+            |      (32KB, 0x8000)       |
+0x08008000  +---------------------------+
+            |       Application         |
+            |    (remaining flash)      |
+            +---------------------------+
+```
+
+The application linker script sets `FLASH ORIGIN = 0x08008000`, and `main()` relocates the vector table with `SCB->VTOR = 0x08008000` as its first operation.
+
+## Software Stack
+
+- **MCU:** STM32F446RE (ARM Cortex-M4)
+- **RTOS:** FreeRTOS
+- **Communication:** CAN 2.0B, 250 kbps
+- **Build system:** PlatformIO + STM32Cube HAL
+- **Linux tools:** Python 3, SocketCAN
+- **Language:** C (firmware), Python (Linux tools)
 
 ## Repository Structure
 
 ```
-Vehicle-ECU-with-STM32/
+CAN-Gimbal-Control/
 ├── docs/
-│   ├── architecture/      # System design documents
-│   ├── can/               # CAN protocol specs
-│   ├── hardware/          # Schematics, pin maps, wiring
-│   └── testing/           # Test reports and logs
-├── ecu_1/                 # ECU Node 1
+│   ├── architecture/      # System architecture & OTA protocol
+│   ├── can/               # CAN message definitions
+│   ├── hardware/          # Wiring, pin maps, schematics
+│   └── testing/           # Test reports
+├── ecu_1/                 # Axis X STM32 node
 │   ├── Core/              # main, system init, interrupts
-│   ├── Drivers/           # Peripheral drivers (GPIO, ADC, PWM, etc.)
-│   ├── Application/       # ECU application logic
+│   ├── Drivers/           # Peripheral drivers (GPIO, Timer, I2C)
+│   ├── Application/       # Control loop logic
 │   ├── RTOS/              # FreeRTOS tasks and config
 │   └── CAN/               # CAN TX/RX, message handling
-├── ecu_2/                 # ECU Node 2 (same structure)
-├── ecu_3/                 # ECU Node 3 (same structure)
-├── common/                # Shared code (CAN IDs, types, utilities)
-├── tests/                 # Test scripts and harnesses
-└── tools/                 # Helper scripts, analysis tools
+├── ecu_2/                 # Axis Y STM32 node (same structure)
+├── ecu_3/                 # Reserved
+├── common/                # Shared CAN IDs, types, utilities
+├── platformIO/            # PlatformIO build configuration
+├── stm32_Util/            # Reusable hardware utility drivers
+├── tests/                 # Test scripts
+└── tools/                 # Linux debug tool, OTA scripts
 ```
 
-## Future Work
+## Development Roadmap
 
-- [TBD] — Diagnostics (UDS / OBD-II learning)
-- [TBD] — Power management / sleep modes
-- [TBD] — Bootloader / firmware update over CAN
-- [TBD] — Hardware-in-the-loop testing
-- [TBD] — PCB design for custom ECU board
+See [`DEVELOPMENT_PLAN.md`](DEVELOPMENT_PLAN.md) for the full phased plan.
 
-## License
+| Phase | Topic | Status |
+|-------|-------|--------|
+| 0 | Hardware bring-up (LED blink, PlatformIO) | **In Progress** |
+| 1 | STM32 GPIO + basic peripherals | Planned |
+| 2 | Timer / Interrupt | Planned |
+| 3 | Sensor drivers (BMP280, VL53L1X) | Planned |
+| 4 | CAN basic communication | Planned |
+| 5 | Multi-node CAN | Planned |
+| 6 | CAN message protocol | Planned |
+| 7 | FreeRTOS integration | Planned |
+| 8 | Bootloader + CAN OTA | Planned |
+| 9 | Motor control loop | Planned |
+| 10 | Linux debug tool (SocketCAN) | Planned |
+| 11 | Testing / documentation / portfolio | Planned |
 
-[TBD]
+## Future Work (V2)
+
+- Batch ACK for faster OTA transfer
+- ESP8266 wireless OTA path
+- Real-time telemetry dashboard (ESP32)
+- Automated test runner with fault injection
+- Telemetry data logger
+
+## Out of Scope
+
+- UDS / ISO-TP / DoIP
+- Secure Boot / cryptographic signing
+- A/B firmware partitions
+- Edge AI
+- Cloud backend
 
 ## Author
 
